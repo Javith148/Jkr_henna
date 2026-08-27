@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JKR Henna & Cone Selling Shop - 100% Chemical-Free Fresh Organic Henna Cones, Bridal Henna Cones, Bulk Orders, & Mehendi Designs." />
+    <title>JKR Henna | Organic Henna Cones & Bridal Mehendi Shop</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN Fallback for instant 100% reliable rendering -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              maroon: {
+                900: '#3b0910',
+                800: '#540d17',
+                700: '#731320',
+              },
+              gold: {
+                500: '#d4af37',
+                400: '#e5c158',
+                300: '#f3e5ab',
+              }
+            },
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+              serif: ['Cinzel', 'Georgia', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-[#faf6f0] text-gray-900 font-sans selection:bg-[#540d17] selection:text-[#f3e5ab] min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
