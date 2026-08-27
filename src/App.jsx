@@ -98,16 +98,33 @@ export default function App() {
         ]);
 
         if (prodsData.status === 'fulfilled' && Array.isArray(prodsData.value)) {
-          const sanitizedProducts = prodsData.value.map(p => {
-            const isPlaceholderName = !p.name || ['aaa', 'ss', 'jbib', 'test', 'demo'].includes(p.name.trim().toLowerCase());
-            const isPlaceholderImage = !p.image || p.image.includes('flutter') || p.image.includes('dolphin');
-            return {
-              ...p,
-              name: isPlaceholderName ? 'JKR Signature Organic Henna Cone' : p.name,
-              image: isPlaceholderImage ? '/images/organic_cone.png' : p.image
-            };
-          });
-          setProducts(sanitizedProducts);
+          const normalizedProducts = prodsData.value.map(p => ({
+            ...p,
+            id: p.id,
+            name: p.name || 'Organic Henna Cone',
+            image: p.image || '/images/organic_cone.png',
+            category: p.category || 'All',
+            price: Number(p.price || 0),
+            originalPrice: p.originalPrice ?? p.original_price ?? p.price,
+            original_price: p.original_price ?? p.originalPrice ?? p.price,
+            discount: p.discount || '',
+            rating: Number(p.rating || 5.0),
+            reviewsCount: p.reviewsCount ?? p.reviews_count ?? 0,
+            reviews_count: p.reviews_count ?? p.reviewsCount ?? 0,
+            stock: Number(p.stock ?? 30),
+            isBestSeller: p.isBestSeller ?? p.is_best_seller ?? false,
+            is_best_seller: p.is_best_seller ?? p.isBestSeller ?? false,
+            isNew: p.isNew ?? p.is_new ?? false,
+            is_new: p.is_new ?? p.isNew ?? false,
+            tipSize: p.tipSize || p.tip_size || '0.38mm Fine',
+            tip_size: p.tip_size || p.tipSize || '0.38mm Fine',
+            stainDuration: p.stainDuration || p.stain_duration || '10 - 14 Days',
+            stain_duration: p.stain_duration || p.stainDuration || '10 - 14 Days',
+            weight: p.weight || '25g per cone',
+            ingredients: p.ingredients || 'Organic Henna Powder, Eucalyptus Oil',
+            description: p.description || ''
+          }));
+          setProducts(normalizedProducts);
         }
         if (catsData.status === 'fulfilled' && Array.isArray(catsData.value)) {
           const rawCats = catsData.value.map(c => typeof c === 'string' ? c : c.name || c);

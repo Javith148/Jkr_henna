@@ -171,9 +171,9 @@ export default function ProductDetailModal({
               <span className="text-2xl sm:text-3xl font-extrabold text-[#3b0910]">
                 ₹{product.price}
               </span>
-              {product.originalPrice && (
+              {(product.originalPrice || product.original_price) && (
                 <span className="text-xs text-gray-400 line-through">
-                  ₹{product.originalPrice}
+                  ₹{product.originalPrice || product.original_price}
                 </span>
               )}
               <span className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">

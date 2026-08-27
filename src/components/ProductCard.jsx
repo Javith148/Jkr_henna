@@ -55,12 +55,12 @@ export default function ProductCard({
 
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-          {product.isBestSeller && (
+          {(product.isBestSeller || product.is_best_seller) && (
             <span className="bg-[#3b0910] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
               BEST SELLER
             </span>
           )}
-          {product.isNew && (
+          {(product.isNew || product.is_new) && (
             <span className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
               NEW ARRIVAL
             </span>
@@ -103,7 +103,7 @@ export default function ProductCard({
           {/* Category & Tip Size */}
           <div className="flex items-center justify-between text-xs font-semibold text-amber-800">
             <span>{product.category}</span>
-            <span className="text-gray-500 font-mono text-xs">{product.tipSize}</span>
+            <span className="text-gray-500 font-mono text-xs">{product.tipSize || product.tip_size}</span>
           </div>
 
           {/* Product Title (+2px increased font size) */}
@@ -141,9 +141,9 @@ export default function ProductCard({
               <span className="text-base sm:text-lg font-extrabold text-[#3b0910]">
                 ₹{product.price}
               </span>
-              {product.originalPrice && (
+              {(product.originalPrice || product.original_price) && (
                 <span className="text-xs text-gray-400 line-through">
-                  ₹{product.originalPrice}
+                  ₹{product.originalPrice || product.original_price}
                 </span>
               )}
             </div>
