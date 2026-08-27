@@ -162,68 +162,131 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Right-Side Slide Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 px-4 pt-3 pb-6 space-y-3">
+        <div className="fixed inset-0 z-50 md:hidden flex justify-end">
+          {/* Backdrop Blur Overlay */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+            onClick={() => setMobileMenuOpen(false)}
+          />
 
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                if (activeTab !== 'shop') setActiveTab('shop');
-              }}
-              className="w-full pl-9 pr-4 py-2 text-xs bg-gray-100 border border-gray-300 rounded-xl text-gray-800 placeholder-gray-400"
-            />
-            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
-          </div>
-
-          <div className="grid grid-cols-1 gap-1 pt-1">
-            {navLinks.map((link) => {
-              const isActive = activeTab === link.id;
-              return (
-                <button
-                  key={link.id}
-                  onClick={() => {
-                    setActiveTab(link.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold transition ${isActive
-                    ? 'bg-[#3b0910] text-white font-bold'
-                    : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                >
-                  {link.label}
-                </button>
-              );
-            })}
-
-            <div className="pt-2 border-t border-gray-200 space-y-1">
+          {/* Right Side Drawer Content */}
+          <div className="relative w-80 max-w-[85vw] bg-white h-full shadow-2xl flex flex-col z-10 transform transition-transform duration-300 ease-in-out">
+            
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-[#3b0910] text-white">
+              <div className="flex items-center gap-2.5">
+                <img
+                  src="/logo.jpg"
+                  alt="JKR Henna"
+                  className="w-8 h-8 rounded-full border border-[#d4af37] object-cover"
+                  onError={(e) => { e.target.src = '/images/logo.jpg'; }}
+                />
+                <span className="font-serif font-bold text-base tracking-wide text-[#f3e5ab]">
+                  JKR HENNA
+                </span>
+              </div>
               <button
-                onClick={() => {
-                  onOpenAccount();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left px-3.5 py-2 text-gray-700 flex items-center gap-2 text-xs hover:bg-gray-100 rounded-lg font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1.5 rounded-full hover:bg-white/10 text-white transition"
               >
-                {user ? (
-                  user.avatar ? (
-                    <img src={user.avatar} alt={user.name} className="w-6 h-6 rounded-full object-cover border border-[#d4af37]" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-[10px] flex items-center justify-center font-serif border border-[#d4af37]">
-                      {(user.name || 'U').trim().charAt(0).toUpperCase()}
-                    </div>
-                  )
-                ) : (
-                  <User className="w-4 h-4" />
-                )}
-                <span>{user ? user.name : 'My Account & Orders'}</span>
+                <X className="w-5 h-5" />
               </button>
             </div>
-          </div>
 
+            {/* Drawer Body */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
+              
+              {/* Search Bar */}
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Search henna cones..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    if (activeTab !== 'shop') setActiveTab('shop');
+                  }}
+                  className="w-full pl-9 pr-4 py-2.5 text-xs bg-gray-100 border border-gray-200 rounded-xl text-gray-800 focus:bg-white focus:border-[#3b0910] focus:outline-none transition"
+                />
+                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+              </div>
+
+              {/* Navigation Links */}
+              <div className="space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-1 mb-2">
+                  Navigation
+                </p>
+                {navLinks.map((link) => {
+                  const isActive = activeTab === link.id;
+                  return (
+                    <button
+                      key={link.id}
+                      onClick={() => {
+                        setActiveTab(link.id);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 rounded-xl text-xs font-semibold flex items-center justify-between transition ${
+                        isActive
+                          ? 'bg-[#3b0910] text-[#f3e5ab] font-bold shadow-xs'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#d4af37]" />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Account Section */}
+              <div className="pt-3 border-t border-gray-100">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-1 mb-2">
+                  Account Options
+                </p>
+                <button
+                  onClick={() => {
+                    onOpenAccount();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-3 bg-gray-50 border border-gray-200/80 rounded-xl flex items-center gap-3 text-xs text-gray-800 font-semibold hover:bg-gray-100 transition"
+                >
+                  {user ? (
+                    user.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full object-cover border border-[#d4af37]" />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-xs flex items-center justify-center font-serif border border-[#d4af37]">
+                        {(user.name || 'U').trim().charAt(0).toUpperCase()}
+                      </div>
+                    )
+                  ) : (
+                    <div className="p-1.5 bg-[#3b0910]/10 rounded-full text-[#3b0910]">
+                      <User className="w-4 h-4" />
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <span className="font-bold">{user ? user.name : 'Sign In / Register'}</span>
+                    <span className="text-[10px] text-gray-500 font-normal">
+                      {user ? user.email : 'Track orders & saved items'}
+                    </span>
+                  </div>
+                </button>
+              </div>
+
+            </div>
+
+            {/* Drawer Footer */}
+            <div className="px-5 py-4 border-t border-gray-100 bg-gray-50 text-center">
+              <p className="text-[11px] text-[#3b0910] font-serif font-bold">
+                ✨ 100% Organic Henna Cones
+              </p>
+              <p className="text-[10px] text-gray-400 mt-0.5">
+                Handcrafted with love
+              </p>
+            </div>
+
+          </div>
         </div>
       )}
 
