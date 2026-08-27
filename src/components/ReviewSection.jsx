@@ -182,7 +182,8 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
                 </span>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
 
         {/* Write Review Modal */}
