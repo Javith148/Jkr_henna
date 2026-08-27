@@ -21,11 +21,13 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
     const selectedProdName = newProduct || products[0]?.name || 'JKR Signature Organic Henna Cone';
     const matchedProduct = (products || []).find(p => p.name === selectedProdName);
 
+    const todayFormatted = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
     const reviewObj = {
       name: user?.name || 'Verified Customer',
       city: newCity || 'Customer',
       rating: newRating,
-      date: 'Just now',
+      date: todayFormatted,
       productId: matchedProduct?.id,
       product_id: matchedProduct?.id,
       productName: selectedProdName,
@@ -50,6 +52,12 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
         console.error('Failed to post review:', err);
       }
     }
+  };
+
+  const isRealAvatar = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    if (url.includes('unsplash.com') || url.includes('ui-avatars.com') || url.includes('dummy')) return false;
+    return true;
   };
 
   return (
@@ -96,35 +104,37 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
 
         {/* Reviews Grid (Show first 6 reviews only) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviews.slice(0, 6).map((rev) => (
-            <div 
-              key={rev.id || Math.random()}
-              className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    {(rev.avatar || rev.image) ? (
-                      <img 
-                        src={rev.avatar || rev.image} 
-                        alt={rev.name} 
-                        className="w-10 h-10 rounded-full object-cover border border-[#d4af37]/40 shadow-2xs shrink-0" 
-                        referrerPolicy="no-referrer"
-                        onError={(e) => { 
-                          e.currentTarget.onerror = null; 
-                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(rev.name || 'C')}&background=3b0910&color=f3e5ab`; 
-                        }}
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-sm flex items-center justify-center border border-[#d4af37]/40 shadow-2xs shrink-0 font-serif">
-                        {(rev.name || 'C').trim().charAt(0).toUpperCase()}
+          {reviews.slice(0, 6).map((rev) => {
+            const avatarUrl = rev.avatar || rev.image;
+            const revDate = (rev.date && rev.date !== 'Just now' && rev.date !== 'Recently')
+              ? rev.date
+              : (rev.created_at ? new Date(rev.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }));
+
+            return (
+              <div 
+                key={rev.id || Math.random()}
+                className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {isRealAvatar(avatarUrl) ? (
+                        <img 
+                          src={avatarUrl} 
+                          alt={rev.name} 
+                          className="w-10 h-10 rounded-full object-cover border border-[#d4af37]/40 shadow-2xs shrink-0" 
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-sm flex items-center justify-center border border-[#d4af37]/40 shadow-2xs shrink-0 font-serif">
+                          {(rev.name || 'C').trim().charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-serif font-bold text-gray-900 text-sm">{rev.name}</h3>
+                        <p className="text-xs text-gray-500">{rev.city || 'Customer'} • {revDate}</p>
                       </div>
-                    )}
-                    <div>
-                      <h3 className="font-serif font-bold text-gray-900 text-sm">{rev.name}</h3>
-                      <p className="text-xs text-gray-500">{rev.city || 'Customer'} • {rev.date || 'Recently'}</p>
                     </div>
-                  </div>
                   <div className="flex text-amber-500 gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star 

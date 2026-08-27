@@ -51,11 +51,13 @@ export default function ProductDetailModal({
     e.preventDefault();
     if (!revComment) return;
 
+    const todayFormatted = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
     const reviewObj = {
       name: user?.name || 'Verified Customer',
       city: revCity || 'Customer',
       rating: revRating,
-      date: 'Just now',
+      date: todayFormatted,
       productId: product.id,
       product_id: product.id,
       productName: product.name,
@@ -63,7 +65,7 @@ export default function ProductDetailModal({
       comment: revComment,
       stainDarkness: 'Dark Mahogany Stain',
       verified: true,
-      avatar: user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+      avatar: user?.avatar || user?.photo_url || user?.photoURL || ''
     };
 
     // Immediately close review form and reset input states
@@ -340,16 +342,12 @@ export default function ProductDetailModal({
                     <div key={rev.id || Math.random()} className="bg-white p-2 rounded-xl border border-gray-200 text-[11px] space-y-0.5 shadow-2xs">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
-                          {(rev.avatar || rev.image) ? (
+                          {(rev.avatar || rev.image) && !(rev.avatar || rev.image).includes('unsplash.com') && !(rev.avatar || rev.image).includes('ui-avatars.com') ? (
                             <img 
                               src={rev.avatar || rev.image} 
                               alt={rev.name} 
                               className="w-5 h-5 rounded-full object-cover border border-[#d4af37]/40 shrink-0"
                               referrerPolicy="no-referrer"
-                              onError={(e) => { 
-                                e.currentTarget.onerror = null; 
-                                e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(rev.name || 'C')}&background=3b0910&color=f3e5ab`; 
-                              }}
                             />
                           ) : (
                             <div className="w-5 h-5 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-[9px] flex items-center justify-center border border-[#d4af37]/40 font-serif shrink-0">
