@@ -13,6 +13,7 @@ import CustomerAccountModal from './components/CustomerAccountModal';
 import WishlistModal from './components/WishlistModal';
 import AdminPanel from './components/AdminPanel';
 import OrderTracking from './components/OrderTracking';
+import NotFoundPage from './components/NotFoundPage';
 import Footer from './components/Footer';
 
 import {
@@ -36,15 +37,19 @@ import { Search, ArrowUpDown, ArrowRight } from 'lucide-react';
 export default function App() {
   // Navigation & View States with URL Path Sync
   const getInitialTab = () => {
-    const path = window.location.pathname.toLowerCase().replace('/', '');
+    const rawPath = window.location.pathname.toLowerCase().trim();
+    const path = rawPath.replace(/^\/+|\/+$/g, '');
     const hash = window.location.hash.toLowerCase().replace('#', '');
+    if (!path || path === '') {
+      return 'home';
+    }
     if (path === 'admin' || path === 'open' || hash === 'admin' || hash === 'open') {
       return 'admin';
     }
     if (['shop', 'custom-order', 'gallery', 'reviews', 'track-order'].includes(path)) {
       return path;
     }
-    return 'home';
+    return '404';
   };
 
   const [activeTab, setActiveTabState] = useState(getInitialTab);
@@ -60,13 +65,16 @@ export default function App() {
   // Sync with browser back/forward buttons & URL changes
   useEffect(() => {
     const handlePopState = () => {
-      const path = window.location.pathname.toLowerCase().replace('/', '');
-      if (path === 'admin' || path === 'open') {
+      const rawPath = window.location.pathname.toLowerCase().trim();
+      const path = rawPath.replace(/^\/+|\/+$/g, '');
+      if (!path || path === '') {
+        setActiveTabState('home');
+      } else if (path === 'admin' || path === 'open') {
         setActiveTabState('admin');
       } else if (['shop', 'custom-order', 'gallery', 'reviews', 'track-order'].includes(path)) {
         setActiveTabState(path);
       } else {
-        setActiveTabState('home');
+        setActiveTabState('404');
       }
     };
 
@@ -661,6 +669,11 @@ export default function App() {
         {/* ORDER TRACKING PAGE */}
         {activeTab === 'track-order' && (
           <OrderTracking orders={orders} />
+        )}
+
+        {/* 404 NOT FOUND PAGE */}
+        {activeTab === '404' && (
+          <NotFoundPage onNavigate={setActiveTab} />
         )}
 
       </main>
