@@ -56,8 +56,29 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
 
   const isRealAvatar = (url) => {
     if (!url || typeof url !== 'string') return false;
-    if (url.includes('unsplash.com') || url.includes('ui-avatars.com') || url.includes('dummy')) return false;
-    return true;
+    const cleanUrl = url.toLowerCase();
+    if (cleanUrl.includes('unsplash') || cleanUrl.includes('ui-avatars') || cleanUrl.includes('dummy') || cleanUrl.includes('placeholder')) {
+      return false;
+    }
+    if (cleanUrl.includes('googleusercontent.com') || cleanUrl.includes('supabase.co') || cleanUrl.startsWith('data:image')) {
+      return true;
+    }
+    return false;
+  };
+
+  const getFormattedReviewDate = (rev) => {
+    if (rev.created_at) {
+      try {
+        const d = new Date(rev.created_at);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+      } catch (e) {}
+    }
+    if (rev.date && !rev.date.includes('ago') && !rev.date.includes('now') && !rev.date.includes('Recently')) {
+      return rev.date;
+    }
+    return new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -106,9 +127,7 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {reviews.slice(0, 6).map((rev) => {
             const avatarUrl = rev.avatar || rev.image;
-            const revDate = (rev.date && rev.date !== 'Just now' && rev.date !== 'Recently')
-              ? rev.date
-              : (rev.created_at ? new Date(rev.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }));
+            const revDate = getFormattedReviewDate(rev);
 
             return (
               <div 

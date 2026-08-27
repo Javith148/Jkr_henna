@@ -342,7 +342,7 @@ export default function ProductDetailModal({
                     <div key={rev.id || Math.random()} className="bg-white p-2 rounded-xl border border-gray-200 text-[11px] space-y-0.5 shadow-2xs">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
-                          {(rev.avatar || rev.image) && !(rev.avatar || rev.image).includes('unsplash.com') && !(rev.avatar || rev.image).includes('ui-avatars.com') ? (
+                          {(rev.avatar || rev.image) && ((rev.avatar || rev.image).includes('googleusercontent.com') || (rev.avatar || rev.image).includes('supabase.co')) ? (
                             <img 
                               src={rev.avatar || rev.image} 
                               alt={rev.name} 
