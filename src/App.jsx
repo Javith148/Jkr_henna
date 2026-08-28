@@ -642,7 +642,7 @@ export default function App() {
 
         {/* CUSTOM / BULK ORDER PAGE */}
         {activeTab === 'custom-order' && (
-          <CustomOrderForm onSubmitCustomOrder={handleSubmitCustomOrder} />
+          <CustomOrderForm onSubmitCustomOrder={handleSubmitCustomOrder} products={products} shopConfig={shopConfig} />
         )}
 
         {/* HENNA GALLERY PAGE */}

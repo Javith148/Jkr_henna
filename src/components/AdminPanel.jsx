@@ -803,8 +803,9 @@ export default function AdminPanel({
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl text-xs">
+                      <div className="grid grid-cols-3 gap-3 bg-slate-50 p-3 rounded-xl text-xs">
                         <div><span className="text-slate-400 block text-[10px]">Role</span><strong>{req.userRole}</strong></div>
+                        <div><span className="text-slate-400 block text-[10px]">Cone Type</span><strong>{req.coneType || req.hennaType || 'Henna Cone'}</strong></div>
                         <div><span className="text-slate-400 block text-[10px]">Event Date</span><strong>{req.eventDate}</strong></div>
                       </div>
                     </div>

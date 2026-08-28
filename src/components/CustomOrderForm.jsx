@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, MapPin, PackageCheck, MessageCircle, Send, CheckCircle, Calculator, HeartHandshake } from 'lucide-react';
 
-export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
+export default function CustomOrderForm({ onSubmitCustomOrder, products = [], shopConfig }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('Bridal Artist');
@@ -10,6 +10,14 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
   const [location, setLocation] = useState('');
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Derive cone product list from products prop
+  const coneProductsList = (products || []).map(p => p.name);
+  const coneOptions = coneProductsList.length > 0
+    ? coneProductsList
+    : ['Organic Bridal Henna Cone', 'Natural Dye Release Cone', 'Lavender Essential Cone', 'Jumbo Bulk Henna Cone'];
+
+  const [coneType, setConeType] = useState(coneOptions[0]);
 
   const whatsappNum = shopConfig?.whatsappNumber || '+919876543210';
 
@@ -34,6 +42,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
       phone,
       userRole,
       quantity,
+      coneType,
       eventDate,
       location,
       specialNotes,
@@ -51,6 +60,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
       `*Name:* ${name} (${userRole})\n` +
       `*Phone:* ${phone}\n` +
       `*Required Quantity:* ${quantity} Cones\n` +
+      `*Selected Cone Type:* ${coneType}\n` +
       `*Event Date:* ${eventDate}\n` +
       `*Delivery Location:* ${location}\n` +
       `*Special Notes:* ${specialNotes || 'None'}\n` +
@@ -185,6 +195,22 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
                 </div>
               </div>
 
+              {/* Cone Type Selection */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Select Cone Type *</label>
+                <select
+                  value={coneType}
+                  onChange={(e) => setConeType(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:border-[#d4af37] focus:outline-none font-semibold text-gray-800 bg-white"
+                >
+                  {coneOptions.map((cName) => (
+                    <option key={cName} value={cName}>
+                      {cName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* Event Date & Location */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -244,6 +270,11 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
                 </h2>
 
                 <div className="space-y-2 text-xs">
+                  <div className="flex justify-between text-gray-600">
+                    <span>Selected Cone:</span>
+                    <strong className="text-gray-800 truncate max-w-[150px]">{coneType}</strong>
+                  </div>
+
                   <div className="flex justify-between text-gray-600">
                     <span>Quantity Requested:</span>
                     <strong className="text-gray-900">{quantity} Cones</strong>
