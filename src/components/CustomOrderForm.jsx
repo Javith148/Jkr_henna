@@ -15,11 +15,11 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
   const availableProducts = (products && products.length > 0)
     ? products
     : [
-        { id: '1', name: 'Organic Bridal Henna Cone', price: 38, image: '/images/organic_cone.png', category: 'Henna Cones' },
-        { id: '2', name: 'Natural Dye Release Cone', price: 45, image: '/images/bridal_cone.png', category: 'Henna Cones' },
-        { id: '3', name: 'Lavender Essential Cone', price: 50, image: '/images/henna_cone_hand_design.png', category: 'Henna Cones' },
-        { id: '4', name: 'Jumbo Bulk Henna Cone', price: 60, image: '/images/organic_cone.png', category: 'Bulk Cones' }
-      ];
+      { id: '1', name: 'Organic Bridal Henna Cone', price: 38, image: '/images/organic_cone.png', category: 'Henna Cones' },
+      { id: '2', name: 'Natural Dye Release Cone', price: 45, image: '/images/bridal_cone.png', category: 'Henna Cones' },
+      { id: '3', name: 'Lavender Essential Cone', price: 50, image: '/images/henna_cone_hand_design.png', category: 'Henna Cones' },
+      { id: '4', name: 'Jumbo Bulk Henna Cone', price: 60, image: '/images/organic_cone.png', category: 'Bulk Cones' }
+    ];
 
   const [selectedProdId, setSelectedProdId] = useState(availableProducts[0]?.id || availableProducts[0]?.name);
 
@@ -93,11 +93,11 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
   return (
     <div className="py-12 bg-[#faf6f0] min-h-screen font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        
+
         {/* Banner Card */}
         <div className="bg-gradient-to-r from-[#540d17] via-[#3b0910] to-[#2b050a] text-white p-8 rounded-3xl shadow-xl border border-[#d4af37]/30 mb-8 relative overflow-hidden">
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none"></div>
-          
+
           <div className="relative z-10 max-w-2xl">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#d4af37]/20 text-[#f3e5ab] text-xs font-bold mb-3 border border-[#d4af37]/40">
               <HeartHandshake className="w-4 h-4 text-[#d4af37]" />
@@ -130,10 +130,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
             {/* Form Container */}
             <form onSubmit={handleSubmit} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-[#d4af37]/20 space-y-6">
-              
+
               <h2 className="font-serif text-xl font-bold text-[#3b0910] border-b border-gray-100 pb-3 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#d4af37]" /> Order Specification Details
               </h2>
@@ -147,11 +147,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                       key={role}
                       type="button"
                       onClick={() => setUserRole(role)}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition ${
-                        userRole === role
+                      className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition ${userRole === role
                           ? 'bg-[#3b0910] text-[#f3e5ab] border-[#d4af37]'
                           : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
-                      }`}
+                        }`}
                     >
                       {role}
                     </button>
@@ -189,7 +188,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
               {/* Cone Type Selection with Image Preview Card */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold text-gray-700">Select Cone Type *</label>
-                
+
                 <div className="flex flex-col sm:flex-row items-stretch gap-3 bg-[#faf6f0] p-3 rounded-2xl border border-[#d4af37]/30">
                   {/* Selected Product Thumbnail */}
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-[#d4af37] shadow-xs shrink-0 bg-white">
@@ -242,8 +241,8 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                 />
                 <div className="flex justify-between text-xs text-gray-500 font-medium">
                   <span>20 Cones (Min)</span>
-                  <span>100 Cones</span>
-                  <span>250 Cones</span>
+                  <span>200 Cones</span>
+                  <span>350 Cones</span>
                   <span>500+ Bulk</span>
                 </div>
               </div>
@@ -299,15 +298,12 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
             {/* Redesigned Premium Live Cost Estimator Card */}
             <div className="lg:col-span-5 space-y-6">
               <div className="bg-white p-6 rounded-3xl shadow-xl border border-[#d4af37]/40 space-y-5">
-                
+
                 {/* Header */}
                 <div className="border-b border-gray-100 pb-3 flex items-center justify-between">
                   <h2 className="font-serif text-xl font-bold text-[#3b0910] flex items-center gap-2">
                     <Calculator className="w-5 h-5 text-[#d4af37]" /> Live Cost Estimator
                   </h2>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                    Live Pricing
-                  </span>
                 </div>
 
                 {/* Selected Product Card Preview */}
@@ -366,7 +362,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                 {/* Wholesale Tier Discounts Breakdown */}
                 <div className="bg-[#faf6f0] p-4 rounded-2xl border border-[#d4af37]/30 text-xs space-y-2">
                   <p className="font-serif font-bold text-[#3b0910] text-xs">Wholesale Tier Discounts (Based on ₹{basePrice}):</p>
-                  
+
                   <div className="space-y-1.5">
                     {[
                       { tier: '20 - 49 Cones', disc: 0, label: `₹${basePrice} / cone` },
@@ -378,11 +374,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                       return (
                         <div
                           key={idx}
-                          className={`flex items-center justify-between p-2 rounded-xl text-[11px] font-medium transition ${
-                            isActive
+                          className={`flex items-center justify-between p-2 rounded-xl text-[11px] font-medium transition ${isActive
                               ? 'bg-[#3b0910] text-[#f3e5ab] font-bold shadow-xs border border-[#d4af37]'
                               : 'bg-white text-gray-700 border border-gray-200'
-                          }`}
+                            }`}
                         >
                           <span className="flex items-center gap-1.5">
                             {isActive && <CheckCircle className="w-3.5 h-3.5 text-[#d4af37]" />}
