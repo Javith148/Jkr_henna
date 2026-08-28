@@ -28,7 +28,7 @@ export default function WhyChooseUs() {
       icon: Award,
       title: "Quality Checked Flow",
       subtitle: "Smooth Fine Tips",
-      description: "Every single cone is hand-tested for smooth stringy paste texture and clog-free pin-point tip flow before dispatch.",
+      description: "Every single cone is hand-tested for smooth stringy paste texture and clog-free flow before dispatch.",
       iconBg: "bg-purple-50 text-purple-800 border-purple-200",
     }
   ];

@@ -803,10 +803,8 @@ export default function AdminPanel({
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-xl text-xs">
+                      <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl text-xs">
                         <div><span className="text-slate-400 block text-[10px]">Role</span><strong>{req.userRole}</strong></div>
-                        <div><span className="text-slate-400 block text-[10px]">Henna Type</span><strong>{req.hennaType}</strong></div>
-                        <div><span className="text-slate-400 block text-[10px]">Tip Size</span><strong>{req.tipSize}</strong></div>
                         <div><span className="text-slate-400 block text-[10px]">Event Date</span><strong>{req.eventDate}</strong></div>
                       </div>
                     </div>
@@ -1028,18 +1026,8 @@ export default function AdminPanel({
                 />
               </div>
 
-              {/* Quick View Specifications (Tip Precision, Stain Life, Weight) */}
-              <div className="grid grid-cols-3 gap-2 pt-1">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 mb-1">Tip Precision</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 0.38mm Ultra Fine"
-                    value={prodTipSize}
-                    onChange={(e) => setProdTipSize(e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600"
-                  />
-                </div>
+              {/* Quick View Specifications (Stain Life, Weight) */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <div>
                   <label className="block text-[10px] font-bold text-slate-700 mb-1">Stain Life</label>
                   <input

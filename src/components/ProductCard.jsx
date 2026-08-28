@@ -100,10 +100,9 @@ export default function ProductCard({
       <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
         
         <div className="space-y-1">
-          {/* Category & Tip Size */}
+          {/* Category */}
           <div className="flex items-center justify-between text-xs font-semibold text-amber-800">
             <span>{product.category}</span>
-            <span className="text-gray-500 font-mono text-xs">{product.tipSize || product.tip_size}</span>
           </div>
 
           {/* Product Title (+2px increased font size) */}

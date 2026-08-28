@@ -130,12 +130,8 @@ export default function ProductDetailModal({
             </div>
           </div>
 
-          {/* Specifications: Tip Precision, Stain Life, Weight */}
-          <div className="grid grid-cols-3 gap-2 w-full text-center pt-0.5">
-            <div className="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs">
-              <p className="text-[9px] text-gray-500 font-semibold uppercase">Tip Precision</p>
-              <p className="text-xs font-bold text-[#540d17]">{product.tipSize || product.tip_size || '0.38mm Fine'}</p>
-            </div>
+          {/* Specifications: Stain Life, Weight */}
+          <div className="grid grid-cols-2 gap-2 w-full text-center pt-0.5">
             <div className="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs">
               <p className="text-[9px] text-gray-500 font-semibold uppercase">Stain Life</p>
               <p className="text-xs font-bold text-emerald-700">{product.stainDuration || product.stain_duration || '10 - 14 Days'}</p>

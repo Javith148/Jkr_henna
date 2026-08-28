@@ -6,10 +6,8 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('Bridal Artist');
   const [quantity, setQuantity] = useState(50);
-  const [hennaType, setHennaType] = useState('Organic Bridal Stain');
   const [eventDate, setEventDate] = useState('');
   const [location, setLocation] = useState('');
-  const [tipSize, setTipSize] = useState('0.35mm Ultra Fine');
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -36,10 +34,8 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
       phone,
       userRole,
       quantity,
-      hennaType,
       eventDate,
       location,
-      tipSize,
       specialNotes,
       estimatedTotal,
       submittedAt: new Date().toISOString().split('T')[0],
@@ -55,8 +51,6 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
       `*Name:* ${name} (${userRole})\n` +
       `*Phone:* ${phone}\n` +
       `*Required Quantity:* ${quantity} Cones\n` +
-      `*Henna Type:* ${hennaType}\n` +
-      `*Tip Size:* ${tipSize}\n` +
       `*Event Date:* ${eventDate}\n` +
       `*Delivery Location:* ${location}\n` +
       `*Special Notes:* ${specialNotes || 'None'}\n` +
@@ -86,7 +80,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
               Custom & Bulk Cone Request
             </h1>
             <p className="text-gray-200 text-xs sm:text-sm leading-relaxed">
-              Are you a <strong>Bridal Mehendi Artist</strong>, <strong>Wedding Planner</strong>, or <strong>Bulk Buyer</strong>? Get custom cone batching, pin-point tip sizing, fresh dye release scheduling, and special wholesale rates.
+              Are you a <strong>Bridal Mehendi Artist</strong>, <strong>Wedding Planner</strong>, or <strong>Bulk Buyer</strong>? Get custom cone batching, fresh dye release scheduling, and special wholesale rates.
             </p>
           </div>
         </div>
@@ -185,40 +179,9 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>20 Cones (Min)</span>
-                  <span>100 Cones</span>
-                  <span>250 Cones</span>
+                  <span>200 Cones</span>
+                  <span>350 Cones</span>
                   <span>500+ Bulk</span>
-                </div>
-              </div>
-
-              {/* Henna Type & Tip Size */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Henna Paste Type</label>
-                  <select
-                    value={hennaType}
-                    onChange={(e) => setHennaType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:border-[#d4af37] focus:outline-none font-semibold text-gray-800"
-                  >
-                    <option value="Organic Bridal Stain">Organic Bridal Stain (Dark Cherry)</option>
-                    <option value="Regular Organic Natural">Regular Organic Natural Stain</option>
-                    <option value="Lavender Essential Blend">Lavender Essential Oil Blend</option>
-                    <option value="Glitter Body Art">Glitter Body Art Cones</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Pin-Point Tip Size</label>
-                  <select
-                    value={tipSize}
-                    onChange={(e) => setTipSize(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:border-[#d4af37] focus:outline-none font-semibold text-gray-800"
-                  >
-                    <option value="0.32mm Super Fine Tip">0.32mm Super Fine (Bridal Detail)</option>
-                    <option value="0.35mm Ultra Fine">0.35mm Ultra Fine (Standard)</option>
-                    <option value="0.38mm Medium Flow">0.38mm Medium Flow (Fast Filler)</option>
-                    <option value="0.45mm Bold Tip">0.45mm Bold Tip</option>
-                  </select>
                 </div>
               </div>
 
@@ -253,7 +216,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
                 <label className="block text-xs font-bold text-gray-700 mb-1">Special Requirements & Instructions</label>
                 <textarea
                   rows={3}
-                  placeholder="e.g., Need 20 cones with lavender smell, insulated ice pouch packaging, extra fine pins..."
+                  placeholder="e.g., Need 20 cones with lavender smell, insulated ice pouch packaging..."
                   value={specialNotes}
                   onChange={(e) => setSpecialNotes(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:border-[#d4af37] focus:outline-none"
@@ -289,16 +252,6 @@ export default function CustomOrderForm({ onSubmitCustomOrder, shopConfig }) {
                   <div className="flex justify-between text-gray-600">
                     <span>Wholesale Tier Price:</span>
                     <strong className="text-emerald-700">₹{pricePerCone} / cone</strong>
-                  </div>
-
-                  <div className="flex justify-between text-gray-600">
-                    <span>Selected Formula:</span>
-                    <strong className="text-gray-800 truncate max-w-[140px]">{hennaType}</strong>
-                  </div>
-
-                  <div className="flex justify-between text-gray-600">
-                    <span>Pin Precision:</span>
-                    <strong className="text-gray-800">{tipSize.split(' ')[0]}</strong>
                   </div>
 
                   <div className="border-t border-gray-200 pt-3 flex justify-between items-baseline text-sm font-bold">

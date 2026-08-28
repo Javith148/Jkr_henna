@@ -36,7 +36,7 @@ export default function HeroBanner({ shopConfig, onShopNowClick, onCustomOrderCl
 
             {/* Subtext */}
             <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Freshly hand-rolled each week using premium Lawsonia henna powder and therapeutic essential oils. Engineered with pin-point precision tips for smooth, effortless flow.
+              Freshly hand-rolled each week using premium Lawsonia henna powder and therapeutic essential oils for smooth, effortless flow.
             </p>
 
             {/* Action Buttons with clear visual hierarchy */}
