@@ -109,10 +109,10 @@ export default function Navbar({
               )}
             </button>
 
-            {/* Account Icon */}
+            {/* Account Icon (Hidden on mobile screens, visible on desktop) */}
             <button
               onClick={onOpenAccount}
-              className="p-1 text-gray-600 hover:text-[#3b0910] hover:bg-gray-100 rounded-full transition flex items-center justify-center"
+              className="hidden md:flex p-1 text-gray-600 hover:text-[#3b0910] hover:bg-gray-100 rounded-full transition items-center justify-center"
               title={user ? `${user.name} Account` : "Sign In / Register"}
             >
               {user ? (
