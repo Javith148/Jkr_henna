@@ -602,17 +602,6 @@ export default function App() {
                   </select>
                 </div>
 
-                {/* Stock filter */}
-                <label className="flex items-center gap-1.5 cursor-pointer font-semibold text-gray-700">
-                  <input
-                    type="checkbox"
-                    checked={inStockOnly}
-                    onChange={(e) => setInStockOnly(e.target.checked)}
-                    className="accent-[#3b0910]"
-                  />
-                  <span>In Stock Only</span>
-                </label>
-
               </div>
             </div>
 

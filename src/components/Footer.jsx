@@ -1,9 +1,16 @@
 import React from 'react';
-import { MessageCircle, ShieldCheck, Truck, Phone, MapPin, Camera, Mail, ArrowRight } from 'lucide-react';
+import { MessageCircle, ShieldCheck, Truck, ArrowRight, Clock } from 'lucide-react';
+
+const InstagramIcon = ({ className = "w-4 h-4" }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
 
 export default function Footer({ shopConfig, setActiveTab, categories = [], onSelectCategory }) {
   const whatsappNum = shopConfig?.whatsappNumber || '+919876543210';
-  const address = shopConfig?.address || 'JKR Henna Hub, Main Bazaar Road, Tamil Nadu, India';
   const instaUrl = shopConfig?.instagramUrl || 'https://www.instagram.com/jkr_henna';
   const instaHandle = shopConfig?.instagramHandle || '@jkr_henna';
 
@@ -125,38 +132,48 @@ export default function Footer({ shopConfig, setActiveTab, categories = [], onSe
             </ul>
           </div>
 
-          {/* Col 4: Redesigned Contact Info Card */}
+          {/* Col 4: Redesigned Connect & Social Hub */}
           <div className="space-y-3">
             <h4 className="font-serif text-[#f3e5ab] font-bold text-sm">
-              Contact & Hub Info
+              Connect & Social Hub
             </h4>
-            <div className="bg-[#4d101a] p-4 rounded-2xl border border-[#d4af37]/30 space-y-3 text-xs">
-              <div className="flex items-start gap-2.5">
-                <div className="p-1.5 bg-[#3b0910] text-[#d4af37] rounded-lg shrink-0 border border-[#d4af37]/30">
-                  <MapPin className="w-3.5 h-3.5" />
+            <div className="bg-[#4d101a] p-4 rounded-2xl border border-[#d4af37]/30 space-y-2.5 text-xs">
+              <a
+                href={instaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 p-2 bg-[#3b0910]/60 hover:bg-[#3b0910] rounded-xl border border-[#d4af37]/30 transition group"
+              >
+                <div className="p-1.5 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white rounded-lg shrink-0 shadow-xs">
+                  <InstagramIcon className="w-4 h-4" />
                 </div>
-                <span className="text-gray-200 text-xs leading-snug">{address}</span>
-              </div>
+                <div>
+                  <p className="text-amber-200 font-bold text-xs group-hover:underline">{instaHandle}</p>
+                  <p className="text-[10px] text-gray-300">Follow on Instagram</p>
+                </div>
+              </a>
 
-              <div className="flex items-center gap-2.5">
-                <div className="p-1.5 bg-[#3b0910] text-[#d4af37] rounded-lg shrink-0 border border-[#d4af37]/30">
-                  <Phone className="w-3.5 h-3.5" />
+              <button
+                onClick={handleWhatsApp}
+                className="w-full flex items-center gap-2.5 p-2 bg-[#3b0910]/60 hover:bg-[#3b0910] rounded-xl border border-[#d4af37]/30 transition group text-left"
+              >
+                <div className="p-1.5 bg-emerald-600 text-white rounded-lg shrink-0 shadow-xs">
+                  <MessageCircle className="w-4 h-4" />
                 </div>
-                <span className="text-gray-200 text-[11px] font-semibold">{whatsappNum}</span>
-              </div>
+                <div>
+                  <p className="text-emerald-300 font-bold text-xs group-hover:underline">WhatsApp Direct</p>
+                  <p className="text-[10px] text-gray-300">Instant Order & Queries</p>
+                </div>
+              </button>
 
-              <div className="flex items-center gap-2.5">
-                <div className="p-1.5 bg-[#3b0910] text-[#d4af37] rounded-lg shrink-0 border border-[#d4af37]/30">
-                  <Camera className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2.5 p-2 bg-[#3b0910]/40 rounded-xl border border-white/5">
+                <div className="p-1.5 bg-amber-500/20 text-[#d4af37] rounded-lg shrink-0">
+                  <Clock className="w-4 h-4" />
                 </div>
-                <a
-                  href={instaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-amber-200 font-semibold text-[11px] hover:underline"
-                >
-                  {instaHandle}
-                </a>
+                <div>
+                  <p className="text-gray-200 font-semibold text-[11px]">Fresh Weekly Batches</p>
+                  <p className="text-[10px] text-gray-400">Handcrafted & Shipped Fast</p>
+                </div>
               </div>
             </div>
           </div>

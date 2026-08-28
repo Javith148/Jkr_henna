@@ -172,15 +172,6 @@ export default function ReviewSection({ reviews = [], onAddReview, products = []
                   "{rev.comment}"
                 </p>
               </div>
-
-              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
-                  Stain: {rev.stainDarkness || rev.stain_darkness || 'Deep Dark Stain'}
-                </span>
-                <span className="text-gray-400 font-medium flex items-center gap-1">
-                  <CheckCircle className="w-3 h-3 text-emerald-600" /> Verified Buyer
-                </span>
-              </div>
             </div>
           );
         })}

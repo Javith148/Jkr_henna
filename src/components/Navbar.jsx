@@ -240,40 +240,6 @@ export default function Navbar({
                 })}
               </div>
 
-              {/* Account Section */}
-              <div className="pt-3 border-t border-gray-100">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 px-1 mb-2">
-                  Account Options
-                </p>
-                <button
-                  onClick={() => {
-                    onOpenAccount();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-3 bg-gray-50 border border-gray-200/80 rounded-xl flex items-center gap-3 text-xs text-gray-800 font-semibold hover:bg-gray-100 transition"
-                >
-                  {user ? (
-                    user.avatar ? (
-                      <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full object-cover border border-[#d4af37]" />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full bg-[#3b0910] text-[#f3e5ab] font-bold text-xs flex items-center justify-center font-serif border border-[#d4af37]">
-                        {(user.name || 'U').trim().charAt(0).toUpperCase()}
-                      </div>
-                    )
-                  ) : (
-                    <div className="p-1.5 bg-[#3b0910]/10 rounded-full text-[#3b0910]">
-                      <User className="w-4 h-4" />
-                    </div>
-                  )}
-                  <div className="flex flex-col">
-                    <span className="font-bold">{user ? user.name : 'Sign In / Register'}</span>
-                    <span className="text-[10px] text-gray-500 font-normal">
-                      {user ? user.email : 'Track orders & saved items'}
-                    </span>
-                  </div>
-                </button>
-              </div>
-
             </div>
 
             {/* Drawer Footer */}
