@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Calendar, MapPin, PackageCheck, MessageCircle, Send, CheckCircle, Calculator, HeartHandshake } from 'lucide-react';
+import { Sparkles, Calendar, MapPin, PackageCheck, MessageCircle, Send, CheckCircle, Calculator, HeartHandshake, X } from 'lucide-react';
 
 export default function CustomOrderForm({ onSubmitCustomOrder, products = [], shopConfig }) {
   const [name, setName] = useState('');
@@ -10,6 +10,8 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
   const [location, setLocation] = useState('');
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [whatsappMsgUrl, setWhatsappMsgUrl] = useState('');
 
   // Products selection logic
   const availableProducts = (products && products.length > 0)
@@ -30,8 +32,8 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
   const basePrice = Number(selectedProduct?.price || 38);
 
-  // Calculate tier discount based on selected product price
-  let tierDiscountPercent = 0;
+  // Calculate tier discount based on selected product price (Starts with 5% discount for <50 cones)
+  let tierDiscountPercent = 5;
   if (quantity >= 50 && quantity < 100) tierDiscountPercent = 10;
   else if (quantity >= 100 && quantity < 250) tierDiscountPercent = 20;
   else if (quantity >= 250) tierDiscountPercent = 30;
@@ -67,9 +69,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
       status: 'Pending Quotation'
     };
 
+    // Save to Database / App state
     onSubmitCustomOrder(orderData);
 
-    // Format WhatsApp message
+    // Format WhatsApp message URL
     const msg = encodeURIComponent(
       `*NEW CUSTOM / BULK HENNA ORDER REQUEST*\n` +
       `-----------------------------------------\n` +
@@ -86,8 +89,11 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
       `Please confirm batch scheduling & invoice details!`
     );
 
-    window.open(`https://wa.me/${whatsappNum.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank');
-    setIsSubmitted(true);
+    const waUrl = `https://wa.me/${whatsappNum.replace(/[^0-9]/g, '')}?text=${msg}`;
+    setWhatsappMsgUrl(waUrl);
+
+    // Show Confirmation Dialog Modal Box
+    setShowDialog(true);
   };
 
   return (
@@ -117,9 +123,9 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
             <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
               <CheckCircle className="w-10 h-10" />
             </div>
-            <h2 className="font-serif text-2xl font-bold text-gray-900">Request Sent Successfully!</h2>
+            <h2 className="font-serif text-2xl font-bold text-gray-900">Request Saved & Transmitted!</h2>
             <p className="text-sm text-gray-600 max-w-md mx-auto">
-              Your bulk order specifications for <strong>{selectedProduct.name}</strong> have been transmitted to our master formulator via WhatsApp.
+              Your custom order request for <strong>{selectedProduct.name}</strong> has been saved. Our master formulator will review your request and contact you via WhatsApp shortly!
             </p>
             <button
               onClick={() => setIsSubmitted(false)}
@@ -200,7 +206,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                     />
                   </div>
 
-                  {/* Dropdown Selector */}
+                  {/* Dropdown Selector (Name Only, Price Removed) */}
                   <div className="flex-1 flex flex-col justify-center space-y-1.5">
                     <select
                       value={selectedProdId}
@@ -209,7 +215,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                     >
                       {availableProducts.map((prod) => (
                         <option key={prod.id || prod.name} value={prod.id || prod.name}>
-                          {prod.name} — ₹{prod.price}/cone
+                          {prod.name}
                         </option>
                       ))}
                     </select>
@@ -232,17 +238,17 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                 </div>
                 <input
                   type="range"
-                  min="20"
+                  min="2"
                   max="500"
-                  step="10"
+                  step="1"
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
                   className="w-full accent-[#3b0910] cursor-pointer"
                 />
                 <div className="flex justify-between text-xs text-gray-500 font-medium">
-                  <span>20 Cones (Min)</span>
-                  <span>200 Cones</span>
-                  <span>350 Cones</span>
+                  <span>2 Cones (Min)</span>
+                  <span>100 Cones</span>
+                  <span>250 Cones</span>
                   <span>500+ Bulk</span>
                 </div>
               </div>
@@ -278,19 +284,20 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                 <label className="block text-xs font-bold text-gray-700 mb-1">Special Requirements & Instructions</label>
                 <textarea
                   rows={3}
-                  placeholder="e.g., Need 20 cones with lavender smell, insulated ice pouch packaging..."
+                  placeholder="e.g., Specific fragrance preference, custom packaging instructions, delivery date details..."
                   value={specialNotes}
                   onChange={(e) => setSpecialNotes(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl focus:border-[#d4af37] focus:outline-none"
                 />
               </div>
 
+              {/* Send Request Button */}
               <button
                 type="submit"
-                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-[#540d17] hover:bg-[#3b0910] text-[#f3e5ab] font-bold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2"
               >
-                <MessageCircle className="w-5 h-5 text-white" />
-                Submit Request via WhatsApp
+                <Send className="w-4 h-4 text-[#d4af37]" />
+                Send Request
               </button>
 
             </form>
@@ -365,10 +372,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
                   <div className="space-y-1.5">
                     {[
-                      { tier: '20 - 49 Cones', disc: 0, label: `₹${basePrice} / cone` },
-                      { tier: '50 - 99 Cones', disc: 10, label: `₹${Math.round(basePrice * 0.9)} / cone (Save 10%)` },
-                      { tier: '100 - 249 Cones', disc: 20, label: `₹${Math.round(basePrice * 0.8)} / cone (Save 20%)` },
-                      { tier: '250+ Cones', disc: 30, label: `₹${Math.round(basePrice * 0.7)} / cone (Save 30%)` },
+                      { tier: '2 - 49 Cones', disc: 5, label: `₹${Math.round(basePrice * 0.95)} / cone (Save 5%)` },
+                      { tier: '50 - 99 Cones', disc: 10, label: `₹${Math.round(basePrice * 0.90)} / cone (Save 10%)` },
+                      { tier: '100 - 249 Cones', disc: 20, label: `₹${Math.round(basePrice * 0.80)} / cone (Save 20%)` },
+                      { tier: '250+ Cones', disc: 30, label: `₹${Math.round(basePrice * 0.70)} / cone (Save 30%)` },
                     ].map((item, idx) => {
                       const isActive = (item.disc === tierDiscountPercent);
                       return (
@@ -403,6 +410,51 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
               </div>
             </div>
 
+          </div>
+        )}
+
+        {/* Confirmation Dialog Modal */}
+        {showDialog && (
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#d4af37]/40 text-center space-y-5 relative">
+              <button
+                onClick={() => { setShowDialog(false); setIsSubmitted(true); }}
+                className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-700 rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600 shadow-inner">
+                <CheckCircle className="w-10 h-10" />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="font-serif text-2xl font-bold text-[#3b0910]">
+                  Request Sent Successfully!
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-medium">
+                  Ungal request send aiyurchu! Order details check pannitu ungalukku WhatsApp pannuvom.
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                <a
+                  href={whatsappMsgUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Chat on WhatsApp
+                </a>
+                <button
+                  onClick={() => { setShowDialog(false); setIsSubmitted(true); }}
+                  className="py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
