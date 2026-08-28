@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JKR Henna - Self Drawing Looping Animation Asset</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #111827;
+      color: #f3f4f6;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      color: #d4af37;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+    .preview-box {
+      width: 600px;
+      height: 600px;
+      max-width: 90vw;
+      max-height: 90vw;
+      border: 2px dashed #d4af37;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      /* Checkerboard pattern to prove full background transparency */
+      background-image: linear-gradient(45deg, #1f2937 25%, transparent 25%), linear-gradient(-45deg, #1f2937 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1f2937 75%), linear-gradient(-45deg, transparent 75%, #1f2937 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 18px;
+      background: #540d17;
+      color: #f3e5ab;
+      font-weight: bold;
+      font-size: 13px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 1px solid #d4af37;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background: #3b0910;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>✨ Self-Drawing Henna (Mehndi) Looping Animation</h1>
+    <p>Seamless 4K Transparent SVG Loop Asset | No Hand | No Cone | Dark Brown Henna Ink</p>
+  </div>
+
+  <div class="preview-box">
+    <iframe src="henna_drawing_loop.html" title="Self Drawing Henna Animation"></iframe>
+  </div>
+
+  <div class="controls">
+    <a href="henna_drawing_loop.html" target="_blank" class="btn">Open Full Screen Animation (Transparent)</a>
+  </div>
+
+</body>
+</html>
