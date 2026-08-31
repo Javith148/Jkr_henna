@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Sparkles, Calendar, MapPin, PackageCheck, MessageCircle, Send, CheckCircle, Calculator, HeartHandshake, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Calendar, MapPin, PackageCheck, MessageCircle, Send, CheckCircle, Calculator, HeartHandshake, X, Lock } from 'lucide-react';
 
-export default function CustomOrderForm({ onSubmitCustomOrder, products = [], shopConfig }) {
+export default function CustomOrderForm({ onSubmitCustomOrder, products = [], shopConfig, user, onOpenAccount }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('Bridal Artist');
@@ -11,7 +11,15 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [whatsappMsgUrl, setWhatsappMsgUrl] = useState('');
+
+  // Auto-fetch & prefill user's name & phone from login details
+  useEffect(() => {
+    if (user) {
+      const fetchedName = user.name || user.displayName || (user.email ? user.email.split('@')[0] : '');
+      if (fetchedName && !name) setName(fetchedName);
+      if (user.phone && !phone) setPhone(user.phone);
+    }
+  }, [user]);
 
   // Products selection logic
   const availableProducts = (products && products.length > 0)
@@ -32,7 +40,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
   const basePrice = Number(selectedProduct?.price || 38);
 
-  // Calculate tier discount based on selected product price (Starts with 5% discount for <50 cones)
+  // Calculate tier discount based on selected product price
   let tierDiscountPercent = 5;
   if (quantity >= 50 && quantity < 100) tierDiscountPercent = 10;
   else if (quantity >= 100 && quantity < 250) tierDiscountPercent = 20;
@@ -42,10 +50,15 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
   const estimatedTotal = quantity * pricePerCone;
   const totalSavings = (basePrice * quantity) - estimatedTotal;
 
-  const whatsappNum = shopConfig?.whatsappNumber || '+919876543210';
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Guard: Must be logged in to submit bulk order
+    if (!user) {
+      if (onOpenAccount) onOpenAccount();
+      return;
+    }
+
     if (!name || !phone || !location || !eventDate) {
       alert('Please fill out all required fields.');
       return;
@@ -55,6 +68,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
       id: `CUSTOM-${Math.floor(100 + Math.random() * 900)}`,
       name,
       phone,
+      userEmail: user.email || '',
       userRole,
       quantity,
       coneType: selectedProduct.name,
@@ -71,26 +85,6 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
     // Save to Database / App state
     onSubmitCustomOrder(orderData);
-
-    // Format WhatsApp message URL
-    const msg = encodeURIComponent(
-      `*NEW CUSTOM / BULK HENNA ORDER REQUEST*\n` +
-      `-----------------------------------------\n` +
-      `*Name:* ${name} (${userRole})\n` +
-      `*Phone:* ${phone}\n` +
-      `*Selected Cone:* ${selectedProduct.name} (Base: ₹${basePrice})\n` +
-      `*Quantity:* ${quantity} Cones\n` +
-      `*Wholesale Price:* ₹${pricePerCone} / cone (${tierDiscountPercent}% OFF)\n` +
-      `*Event Date:* ${eventDate}\n` +
-      `*Delivery Location:* ${location}\n` +
-      `*Special Notes:* ${specialNotes || 'None'}\n` +
-      `-----------------------------------------\n` +
-      `*Estimated Total Quote:* ₹${estimatedTotal} (Saved ₹${totalSavings})\n\n` +
-      `Please confirm batch scheduling & invoice details!`
-    );
-
-    const waUrl = `https://wa.me/${whatsappNum.replace(/[^0-9]/g, '')}?text=${msg}`;
-    setWhatsappMsgUrl(waUrl);
 
     // Show Confirmation Dialog Modal Box
     setShowDialog(true);
@@ -118,6 +112,23 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
           </div>
         </div>
 
+        {/* Login Guard Notice if not signed in */}
+        {!user && (
+          <div className="bg-amber-50 border border-amber-300/80 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-xs">
+            <div className="flex items-center gap-2.5 text-amber-900">
+              <Lock className="w-5 h-5 text-amber-700 shrink-0" />
+              <span><strong>Account Login Required:</strong> Please sign in to submit custom/bulk order requests and track progress.</span>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenAccount}
+              className="px-4 py-2 bg-[#3b0910] text-[#f3e5ab] font-bold text-xs rounded-xl hover:bg-[#2b050a] transition shrink-0 shadow-xs"
+            >
+              Sign In / Register Now
+            </button>
+          </div>
+        )}
+
         {isSubmitted ? (
           <div className="bg-white p-8 rounded-3xl border border-[#d4af37]/30 text-center space-y-4 shadow-xl">
             <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
@@ -125,7 +136,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
             </div>
             <h2 className="font-serif text-2xl font-bold text-gray-900">Request Saved & Transmitted!</h2>
             <p className="text-sm text-gray-600 max-w-md mx-auto">
-              Your custom order request for <strong>{selectedProduct.name}</strong> has been saved. Our master formulator will review your request and contact you via WhatsApp shortly!
+              Your custom order request for <strong>{selectedProduct.name} ({quantity} Cones)</strong> has been saved. Our master formulator will review your request and contact you via WhatsApp shortly!
             </p>
             <button
               onClick={() => setIsSubmitted(false)}
@@ -232,7 +243,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <label className="text-xs font-bold text-gray-700">Required Cone Quantity *</label>
-                  <span className="text-xs font-bold text-[#3b0910] bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+                  <span className="text-xs font-bold text-[#3b0910] bg-amber-100 px-3 py-1 rounded-full border border-amber-300 font-mono">
                     Selected: {quantity} Cones
                   </span>
                 </div>
@@ -246,10 +257,10 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
                   className="w-full accent-[#3b0910] cursor-pointer"
                 />
                 <div className="flex justify-between text-xs text-gray-500 font-medium">
-                  <span>2 Cones (Min)</span>
+                  <span>2 Cones</span>
                   <span>100 Cones</span>
                   <span>250 Cones</span>
-                  <span>500+ Bulk</span>
+                  <span>500+ Cones</span>
                 </div>
               </div>
 
@@ -339,7 +350,7 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
                   <div className="flex justify-between items-center text-gray-700">
                     <span>Quantity Requested:</span>
-                    <strong className="text-gray-900 font-bold bg-white px-2 py-0.5 rounded border border-gray-200">{quantity} Cones</strong>
+                    <strong className="text-gray-900 font-bold bg-white px-2.5 py-0.5 rounded border border-gray-200 font-mono">{quantity} Cones</strong>
                   </div>
 
                   <div className="flex justify-between items-center text-gray-700">
@@ -430,28 +441,19 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
 
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl font-bold text-[#3b0910]">
-                  Request Sent Successfully!
+                  Request Saved & Transmitted!
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-medium">
-                  Ungal request send aiyurchu! Order details check pannitu ungalukku WhatsApp pannuvom.
+                  Your custom order request for <strong>{selectedProduct.name} ({quantity} Cones)</strong> has been saved. Our master formulator will review your request and contact you via WhatsApp shortly!
                 </p>
               </div>
 
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={whatsappMsgUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Chat on WhatsApp
-                </a>
+              <div className="pt-2 flex justify-center">
                 <button
                   onClick={() => { setShowDialog(false); setIsSubmitted(true); }}
-                  className="py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition"
+                  className="w-full py-3 px-5 bg-[#540d17] hover:bg-[#3b0910] text-[#f3e5ab] font-bold text-xs rounded-xl transition shadow-md"
                 >
-                  Close
+                  OK, Got It
                 </button>
               </div>
             </div>
@@ -462,3 +464,4 @@ export default function CustomOrderForm({ onSubmitCustomOrder, products = [], sh
     </div>
   );
 }
+
